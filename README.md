@@ -24,12 +24,6 @@ For arithmetic operations (`add` and `sub`), the interface prompts the user to s
 
 Upon receiving the input parameters, the simulator transitions to an animated graphical processor screen that sequentially displays the required register enable-signals and multiplexer select bits for each clock cycle of the instruction execution.
 
-<p align="center">
-  <img src="images/simcore_interface.png" alt="SimCore main startup screen and animated add instruction execution" width="800">
-  <br>
-  <em><b>Figure 2:</b> SimCore interface. Left: main startup screen. Right: animated execution of an <code>add</code> instruction.</em>
-</p>
-
 ## Operational Guide
 
 The software is written in C and is structured to execute on a NIOS V processor environment instantiated on an FPGA evaluation board (such as the DE1-SoC via the Intel Monitor Program), or equivalently within a cloud-based simulator such as [CPULator](https://cpulator.01xz.net/).
