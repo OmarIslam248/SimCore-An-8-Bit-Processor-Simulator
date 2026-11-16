@@ -6,6 +6,12 @@ SimCore was developed as the final project for a core Computer Organization cour
 
 The project models the "Simple Processor," a compact 8-bit architecture featuring four general-purpose registers, 256 bytes of memory, and a core instruction set of 10 operations. The underlying digital design incorporates essential registers, such as the Program Counter (PC), Instruction Register (IR), and status flags (N and Z), alongside an Arithmetic Logic Unit (ALU), multiplexers, a register file (RF), and internal memory blocks.
 
+<p align="center">
+  <img src="images/processor_datapath.png" alt="Datapath of the 8-bit Simple Processor" width="800">
+  <br>
+  <em><b>Figure 1:</b> Datapath of the 8-bit Simple Processor modeled by SimCore, showing the PC, IR, memory, register file (RF), ALU, multiplexers, and control signals.</em>
+</p>
+
 ## What is SimCore?
 
 SimCore is a software-based simulator designed to model instruction execution cycles. The application allows users to select and simulate three core instruction types:
@@ -18,25 +24,25 @@ For arithmetic operations (`add` and `sub`), the interface prompts the user to s
 
 Upon receiving the input parameters, the simulator transitions to an animated graphical processor screen that sequentially displays the required register enable-signals and multiplexer select bits for each clock cycle of the instruction execution.
 
-\<insert picture (Screenshots of the SimCore interface, showing the main startup screen on the left and the animated execution of an add instruction on the right) here\>
+<p align="center">
+  <img src="images/simcore_interface.png" alt="SimCore main startup screen and animated add instruction execution" width="800">
+  <br>
+  <em><b>Figure 2:</b> SimCore interface. Left: main startup screen. Right: animated execution of an <code>add</code> instruction.</em>
+</p>
 
 ## Operational Guide
 
-The software is written in C and is structured to execute on a NIOS V processor environment instantiated on an FPGA evaluation board (such as the DE1-SoC via the Intel Monitor Program), or equivalently within a cloud-based simulator such as CPULator.
+The software is written in C and is structured to execute on a NIOS V processor environment instantiated on an FPGA evaluation board (such as the DE1-SoC via the Intel Monitor Program), or equivalently within a cloud-based simulator such as [CPULator](https://cpulator.01xz.net/).
 
 ### Execution Steps
 
 1. **Compilation and Loading:** Load the C source files into the development environment, compile, and load the program to initialize the disassembly and execution panes.
-
 2. **Initialization:** Start the program execution. The welcome screen presents options to select an instruction:
    - Press `a` for `add Ra, Rb`
    - Press `s` for `sub Ra, Rb`
    - Press `o` for `ori imm5`
-
 3. **Parameter Configuration:** For arithmetic instructions, enter the desired register numbers (e.g., `3` for R3, `2` for R2) and press the spacebar. For the `ori` instruction, input the 5-bit binary constant (`imm5`) using the `0` and `1` keys.
-
 4. **Simulation Execution:** After encoding is complete, press the spacebar to initiate the animated cycle-by-cycle processor execution phase. Users may pause and resume the simulation at any point using the spacebar.
-
 5. **Completion:** Upon execution completion, a status indicator appears. Press `e` to return to the main menu or `r` to replay the current instruction sequence.
 
 ## Architecture, Flowchart, and Block Diagram
@@ -48,9 +54,34 @@ The program execution flow is managed by a structured finite state machine archi
 - **Encoding Module:** Binary instruction formatting prior to memory mapping.
 - **Processor Simulation Module:** Graphical representation of the processor datapath, highlighting active logic blocks in designated colors and stepping through clock cycles via timer interrupts.
 
+<p align="center">
+  <img src="images/flowchart.png" alt="SimCore program flow finite state machine" width="700">
+  <br>
+  <em><b>Figure 3:</b> Program flow finite state machine. The user selects an instruction (<code>a</code>, <code>s</code>, or <code>o</code>), the instruction is encoded, and the processor simulation runs cycle by cycle with a pause state. On completion, the user chooses to replay or return to the main screen.</em>
+</p>
+
 The underlying system architecture is divided into four primary functional groups:
 
 - **Input Group:** Handles asynchronous keyboard input polling or interrupt handling.
 - **Output Group:** Manages display rendering via a VGA interface, audio feedback generation, and secondary debugging aids such as onboard LEDs and hexadecimal displays.
 - **Interrupt Service Routine (ISR) Group:** Manages system responsiveness using interrupt-based I/O synchronization for hardware timers and input peripherals.
 - **Main Program Group:** Implements the primary control finite state machines, background rendering routines, and graphical display plotters.
+
+<p align="center">
+  <img src="images/system_block_diagram.png" alt="SimCore system block diagram" width="800">
+  <br>
+  <em><b>Figure 4:</b> System block diagram showing the input, interrupt, main program, and output groups, including the keyboard input parser, 1.5 s animation timer FSM, screen and executer modules, and VGA, audio, LED, and HEX outputs.</em>
+</p>
+
+## Repository Structure
+
+```
+simcore/
+├── README.md
+├── images/
+│   ├── processor_datapath.png
+│   ├── simcore_interface.png
+│   ├── flowchart.png
+│   └── system_block_diagram.png
+└── src/            # C source files
+```
